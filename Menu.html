@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sani-Restaurant</title>
+    <!-- Verknüpfung zur externen CSS-Datei -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 class="main-title">Sani-Restaurant</h1>
+    <h2 class="cursive-text">Menu</h2>
+    
+    <table class="menu-table">
+        <tr>
+            <th>Food</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>Pizza</td>
+            <td class="price-cell">15$</td>
+        </tr>
+        <tr>
+            <td>Burger</td>
+            <td class="price-cell">7$</td>
+        </tr>
+        <tr>
+            <td>Sushi</td>
+            <td class="price-cell">12$</td>
+        </tr>
+        <tr>
+            <td>Fish</td>
+            <td class="price-cell">20$</td>
+        </tr>
+    </table>
+
+    <form id="orderForm">
+        <h1 class="cursive-text">Choice</h1>
+        <input type="checkbox" id="food1" name="food" value="Pizza" data-price="15">
+        <label for="food1">Pizza (15$)</label><br>
+        
+        <input type="checkbox" id="food2" name="food" value="Burger" data-price="7">
+        <label for="food2">Burger (7$)</label><br>
+        
+        <input type="checkbox" id="food3" name="food" value="Sushi" data-price="12">
+        <label for="food3">Sushi (12$)</label><br>
+        
+        <input type="checkbox" id="food4" name="food" value="Fish" data-price="20">
+        <label for="food4">Fish (20$)</label>
+
+        <h1 class="cursive-text">Please enter your name and address</h1>
+        <label for="fname">First name:</label><br>
+        <input type="text" pattern="[A-Za-zÄÖÜäöüß]+" id="fname" name="fname" required><br> 
+        
+        <label for="lname">Last name:</label><br>
+        <input type="text" pattern="[A-Za-zÄÖÜäöüß]+" id="lname" name="lname" required><br> 
+        
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" required><br><br>
+
+        <button type="submit" class="submit-btn">Bestellung absenden</button>
+    </form>
+
+    <!-- Ausgabe-Bereich für das Ergebnis -->
+    <div id="output" class="output-box" style="display: none;"></div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Verhindert das Neuladen der Seite
+
+            // Werte aus den Eingabefeldern holen
+            const fname = document.getElementById('fname').value.trim();
+            const lname = document.getElementById('lname').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            // Ausgewählte Speisen ermitteln und Gesamtpreis berechnen
+            const checkedBoxes = document.querySelectorAll('input[name="food"]:checked');
+            
+            if (checkedBoxes.length === 0) {
+                alert('Bitte wählen Sie mindestens ein Gericht aus!');
+                return;
+            }
+
+            let selectedFoods = [];
+            let totalPrice = 0;
+
+            checkedBoxes.forEach(box => {
+                selectedFoods.push(box.value);
+                totalPrice += parseFloat(box.getAttribute('data-price'));
+            });
+/*
+ test
+*/
+// Ergebnis im HTML-Bereich anzeigen
+            const outputDiv = document.getElementById('output');
+            outputDiv.style.display = 'block';
+            outputDiv.innerHTML = `
+                <h2>Vielen Dank für Ihre Bestellung, ${fname} ${lname}!</h2>
+                <p><strong>Lieferadresse:</strong> ${address}</p>
+                <p><strong>Bestellte Gerichte:</strong> ${selectedFoods.join(', ')}</p>
+                <p class="total-price"><strong>Gesamtpreis:</strong> ${totalPrice}$</p>
+            `;
+        });
+    </script>
+
+</body>
+</html>
